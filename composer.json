@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "sensio/framework-extra-bundle": "^5.5",
+        "squizlabs/php_codesniffer": "*",
         "symfony/console": "5.0.*",
         "symfony/dotenv": "5.0.*",
         "symfony/flex": "^1.3.1",
@@ -53,7 +54,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "tests": "vendor/bin/phpunit",
+        "code-check": "vendor/bin/phpcs",
+        "code-fix": "vendor/bin/phpcbf"
     },
     "conflict": {
         "symfony/symfony": "*"

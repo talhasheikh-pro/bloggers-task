@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Repository;
 
 use App\Entity\Blogger;
@@ -26,20 +26,25 @@ class BloggerRepository extends ServiceEntityRepository
      */
     public function prepareEntity(array $bloggerArgs, Blogger $blogger)
     {
-      try{
-        // mandatory params
-        if(isset($bloggerArgs['name'])) $blogger->setName($bloggerArgs['name']);
-        if(isset($bloggerArgs['email'])) $blogger->setEmail($bloggerArgs['email']);
-        if(isset($bloggerArgs['username'])) $blogger->setUsername($bloggerArgs['username']);
+        try {
+          // mandatory params
+            if (isset($bloggerArgs['name'])) {
+                $blogger->setName($bloggerArgs['name']);
+            }
+            if (isset($bloggerArgs['email'])) {
+                $blogger->setEmail($bloggerArgs['email']);
+            }
+            if (isset($bloggerArgs['username'])) {
+                $blogger->setUsername($bloggerArgs['username']);
+            }
 
-        // optional params while
-        $blogger->setActive(1);
-        $blogger->setRating($bloggerArgs['rating'] ?? 0);
+          // optional params while
+            $blogger->setActive(1);
+            $blogger->setRating($bloggerArgs['rating'] ?? 0);
 
-        return $blogger;
-
-      }catch(\Exception $e){
-        throw new \Exception($e->getMessage());
-      }
+            return $blogger;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }

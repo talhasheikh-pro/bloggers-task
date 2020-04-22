@@ -20,7 +20,7 @@ class BloggersController extends AbstractController
      */
     public function getRepository() :BloggerRepository
     {
-      return $this->getDoctrine()->getRepository(Blogger::class);
+        return $this->getDoctrine()->getRepository(Blogger::class);
     }
 
     /**
@@ -38,9 +38,10 @@ class BloggersController extends AbstractController
     {
         $criteria = new Criteria();
 
-        if(\sizeof($request->request->all())){
-          foreach($request->request->all() as $key => $value)
-            $criteria->orWhere(new Comparison($key, Comparison::CONTAINS, $value));
+        if (\sizeof($request->request->all())) {
+            foreach ($request->request->all() as $key => $value) {
+                $criteria->orWhere(new Comparison($key, Comparison::CONTAINS, $value));
+            }
         }
 
         $bloggers = $this->getRepository()->matching($criteria);
@@ -52,11 +53,12 @@ class BloggersController extends AbstractController
      */
     public function find(Blogger $blogger = null) :Response
     {
-      if (!$blogger)
-        return HttpResponse::send("Blogger with the provided id cannot be found", Response::HTTP_NOT_FOUND, false );
+        if (!$blogger) {
+            return HttpResponse::send("Blogger with the provided id cannot be found", Response::HTTP_NOT_FOUND, false);
+        }
 
 
-      return HttpResponse::send($blogger);
+        return HttpResponse::send($blogger);
     }
 
     /**
@@ -64,27 +66,27 @@ class BloggersController extends AbstractController
      */
     public function create(Request $request) :Response
     {
-        try{
-          $blogger = $this->getRepository()->prepareEntity($request->request->all(), new Blogger());
-          $this->persistBlogger($blogger);
+        try {
+            $blogger = $this->getRepository()->prepareEntity($request->request->all(), new Blogger());
+            $this->persistBlogger($blogger);
 
-          return HttpResponse::send($blogger);
-        } catch(\Exception $e){
-          return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false );
+            return HttpResponse::send($blogger);
+        } catch (\Exception $e) {
+            return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
         }
     }
 
     public function persistBlogger(Blogger $blogger) :?bool
     {
-      try{
-        $entityManager = $this->getManager();
-        $entityManager->persist($blogger);
-        $entityManager->flush();
+        try {
+            $entityManager = $this->getManager();
+            $entityManager->persist($blogger);
+            $entityManager->flush();
 
-        return true;
-      } catch(\Exception $e){
-        throw new \Exception($e->getMessage());
-      }
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -92,17 +94,22 @@ class BloggersController extends AbstractController
      */
     public function update(Blogger $blogger = null, Request $request) :Response
     {
-      try{
-        if(!$blogger)
-          return HttpResponse::send("Blogger with the provided id cannot be found", Response::HTTP_NOT_FOUND, false );
+        try {
+            if (!$blogger) {
+                return HttpResponse::send(
+                    "Blogger with the provided id cannot be found",
+                    Response::HTTP_NOT_FOUND,
+                    false
+                );
+            }
 
-        $blogger = $this->getRepository()->prepareEntity($request->request->all(), $blogger);
-        $this->persistBlogger($blogger);
+            $blogger = $this->getRepository()->prepareEntity($request->request->all(), $blogger);
+            $this->persistBlogger($blogger);
 
-        return HttpResponse::send($blogger);
-      } catch(\Exception $e){
-        return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false );
-      }
+            return HttpResponse::send($blogger);
+        } catch (\Exception $e) {
+            return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
+        }
     }
 
     /**
@@ -110,17 +117,22 @@ class BloggersController extends AbstractController
      */
     public function delete(Blogger $blogger = null, Request $request) :Response
     {
-        try{
-          if(!$blogger)
-            return HttpResponse::send("Blogger with the provided id cannot be found", Response::HTTP_NOT_FOUND, false );
+        try {
+            if (!$blogger) {
+                return HttpResponse::send(
+                    "Blogger with the provided id cannot be found",
+                    Response::HTTP_NOT_FOUND,
+                    false
+                );
+            }
 
-          $entityManager = $this->getManager();
-          $entityManager->remove($blogger);
-          $entityManager->flush();
+            $entityManager = $this->getManager();
+            $entityManager->remove($blogger);
+            $entityManager->flush();
 
-          return HttpResponse::send("Blogger has been deleted");
-        } catch(\Exception $e){
-          return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false );
+            return HttpResponse::send("Blogger has been deleted");
+        } catch (\Exception $e) {
+            return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
         }
     }
 
@@ -129,15 +141,12 @@ class BloggersController extends AbstractController
      */
     public function search(Request $request) :Response
     {
-        try{
-          $bloggers = $this->getRepository()->findBy($request->request->all());
+        try {
+            $bloggers = $this->getRepository()->findBy($request->request->all());
 
-          return HttpResponse::send($blogger);
-        } catch(\Exception $e){
-          return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false );
+            return HttpResponse::send($blogger);
+        } catch (\Exception $e) {
+            return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
         }
     }
-
-
-
 }

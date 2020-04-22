@@ -38,5 +38,4 @@ class BeforeActionSubscriber implements EventSubscriberInterface
 
         $request->request->replace(is_array($data) ? $data : array());
     }
-
 }
