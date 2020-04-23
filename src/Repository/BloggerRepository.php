@@ -27,17 +27,26 @@ class BloggerRepository extends ServiceEntityRepository
      * @param {array} $bloggerArgs - parameters for the blogger instance
      * @param {Blogger} $blogger - instance of App\Entity\Blogger
      */
-    public function prepareEntity(array $bloggerArgs, Blogger $blogger)
+    public function prepareEntity(array $bloggerArgs, Blogger $blogger, $isCreate=true)
     {
         try {
-            // mandatory params
-            foreach($this->requiredParams as $param)
-              if (!isset($bloggerArgs[$param]))
-                throw new \Exception("{$param} is required");
+            // mandatory params, for `CREATE`
+            if($isCreate)
+              foreach($this->requiredParams as $param)
+                if (!isset($bloggerArgs[$param]))
+                  throw new \Exception("{$param} is required");
 
-            $blogger->setName($bloggerArgs['name']);
-            $blogger->setEmail($bloggerArgs['email']);
-            $blogger->setUsername($bloggerArgs['username']);
+            // check, for update action
+            if (isset($bloggerArgs['name']))
+              $blogger->setName($bloggerArgs['name']);
+
+            // check, for update action
+            if (isset($bloggerArgs['email']))
+              $blogger->setEmail($bloggerArgs['email']);
+
+            // check, for update action
+            if (isset($bloggerArgs['username']))
+              $blogger->setUsername($bloggerArgs['username']);
 
           // optional params while
             $blogger->setActive(1);

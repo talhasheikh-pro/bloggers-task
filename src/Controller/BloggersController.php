@@ -118,7 +118,7 @@ class BloggersController extends AbstractController
                 );
             }
 
-            $blogger = $this->getRepository()->prepareEntity($request->request->all(), $blogger);
+            $blogger = $this->getRepository()->prepareEntity($request->request->all(), $blogger, false);
             $this->persistBlogger($blogger);
 
             return HttpResponse::send($blogger);
