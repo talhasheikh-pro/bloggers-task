@@ -20,10 +20,10 @@ class BloggersController extends AbstractController
     private $doctrineRegistry = null;
     private $entityManager = null;
 
-    public function __construct(EntityManager $entityManager=null, Registry $doctrineRegistry=null)
+    public function __construct(EntityManager $entityManager = null, Registry $doctrineRegistry = null)
     {
-      $this->entityManager = $entityManager;
-      $this->doctrineRegistry = $doctrineRegistry;
+        $this->entityManager = $entityManager;
+        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     /**
