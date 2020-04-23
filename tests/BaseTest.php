@@ -4,6 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use GuzzleHttp\Client;
 
 class BaseTest extends KernelTestCase
 {
@@ -17,6 +18,13 @@ class BaseTest extends KernelTestCase
      */
     protected $doctrine;
 
+    /**
+     * @var GuzzleHttp\Client
+     */
+    protected $http;
+
+
+
     protected function setUp(): void
     {
         $kernel = self::bootKernel();
@@ -27,6 +35,13 @@ class BaseTest extends KernelTestCase
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
+
+        $this->http = new Client([
+          'base_uri' => 'http://127.0.0.1:8000/',
+          'headers' => [
+            'Content-Type' => "application/json"
+          ]
+        ]);
     }
 
     protected function tearDown(): void

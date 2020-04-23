@@ -10,9 +10,9 @@ class BloggersControllerTest extends BaseTest
 {
 
       protected $mockBlogger = [
-         "name" => "test",
-         "email" => "testunique@test.com",
-         "username" => "testunique",
+         "name" => "unit_test",
+         "email" => "unit_testunique@test.com",
+         "username" => "unit_testunique",
          "rating" => 5
       ];
 
@@ -42,7 +42,7 @@ class BloggersControllerTest extends BaseTest
         $request = new Request();
         $bloggers = \json_decode($this->getControllerInstance()->index($request)->getContent(), true);
 
-        $this->assertEquals(\sizeof($bloggers), 10);
+        $this->assertTrue(\sizeof($bloggers) > 0);
       }
 
       public function testUpdate()

@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "guzzlehttp/guzzle": "^6.5",
         "sensio/framework-extra-bundle": "^5.5",
         "squizlabs/php_codesniffer": "*",
         "symfony/console": "5.0.*",
@@ -58,6 +59,10 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "serve": "symfony serve",
+        "db:setup": "php bin/console doctrine:database:create && composer run-script db:migrate",
+        "db:migrate": "php bin/console doctrine:migration:migrate",
+        "db:mock": "php bin/console doctrine:fixtures:load",
         "tests": "vendor/bin/phpunit",
         "code-check": "vendor/bin/phpcs",
         "code-fix": "vendor/bin/phpcbf"
