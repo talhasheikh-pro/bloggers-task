@@ -13,6 +13,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BloggerRepository extends ServiceEntityRepository
 {
+
+    protected $requiredParams = ['name', 'email', 'username'];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Blogger::class);
@@ -27,16 +30,14 @@ class BloggerRepository extends ServiceEntityRepository
     public function prepareEntity(array $bloggerArgs, Blogger $blogger)
     {
         try {
-          // mandatory params
-            if (isset($bloggerArgs['name'])) {
-                $blogger->setName($bloggerArgs['name']);
-            }
-            if (isset($bloggerArgs['email'])) {
-                $blogger->setEmail($bloggerArgs['email']);
-            }
-            if (isset($bloggerArgs['username'])) {
-                $blogger->setUsername($bloggerArgs['username']);
-            }
+            // mandatory params
+            foreach($this->requiredParams as $param)
+              if (!isset($bloggerArgs[$param]))
+                throw new \Exception("{$param} is required");
+
+            $blogger->setName($bloggerArgs['name']);
+            $blogger->setEmail($bloggerArgs['email']);
+            $blogger->setUsername($bloggerArgs['username']);
 
           // optional params while
             $blogger->setActive(1);
