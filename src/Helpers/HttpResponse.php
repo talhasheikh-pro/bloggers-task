@@ -10,7 +10,7 @@ class HttpResponse
     'Content-Type' => 'application/json'
     ];
 
-    public function send($data, $responseCode = Response::HTTP_OK, $shouldSerialize = true) :Response
+    public static function send($data, $responseCode = Response::HTTP_OK, $shouldSerialize = true) :Response
     {
         return new Response(
             $shouldSerialize ? EntitySerializer::serialize($data) : $data,

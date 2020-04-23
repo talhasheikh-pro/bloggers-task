@@ -12,15 +12,28 @@ use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\Common\Collections\Criteria;
 use App\Repository\BloggerRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class BloggersController extends AbstractController
 {
+
+    private $doctrineRegistry = null;
+    private $entityManager = null;
+
+    public function __construct(EntityManager $entityManager=null, Registry $doctrineRegistry=null)
+    {
+      $this->entityManager = $entityManager;
+      $this->doctrineRegistry = $doctrineRegistry;
+    }
+
     /**
      * Gets the Model's repository
      */
     public function getRepository() :BloggerRepository
     {
-        return $this->getDoctrine()->getRepository(Blogger::class);
+        return $this->doctrineRegistry != null
+                ? $this->doctrineRegistry->getRepository(Blogger::class)
+                : $this->getDoctrine()->getRepository(Blogger::class);
     }
 
     /**
@@ -28,7 +41,9 @@ class BloggersController extends AbstractController
      */
     public function getManager() :EntityManager
     {
-        return $this->getDoctrine()->getManager();
+        return $this->entityManager != null
+                ? $this->entityManager
+                : $this->getDoctrine()->getManager();
     }
 
     /**
@@ -115,7 +130,7 @@ class BloggersController extends AbstractController
     /**
      * @Route("/bloggers/{id}", name="blogger_delete", methods={"DELETE"})
      */
-    public function delete(Blogger $blogger = null, Request $request) :Response
+    public function delete(Blogger $blogger = null) :Response
     {
         try {
             if (!$blogger) {
@@ -131,20 +146,6 @@ class BloggersController extends AbstractController
             $entityManager->flush();
 
             return HttpResponse::send("Blogger has been deleted");
-        } catch (\Exception $e) {
-            return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
-        }
-    }
-
-    /**
-     * @Route("/bloggers/search", name="blogger_search", methods={"GET"})
-     */
-    public function search(Request $request) :Response
-    {
-        try {
-            $bloggers = $this->getRepository()->findBy($request->request->all());
-
-            return HttpResponse::send($blogger);
         } catch (\Exception $e) {
             return HttpResponse::send($e->getMessage(), Response::HTTP_BAD_REQUEST, false);
         }
